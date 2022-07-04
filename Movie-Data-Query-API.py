@@ -49,7 +49,7 @@ def parse_input(my_input):
     db_query(query, values)
 
 
-def api_init():
+if __name__ == "__main__":
     init_input = input(
         """
         Please enter the query params, currently only support the exactly query mode.
@@ -67,4 +67,3 @@ def api_init():
             print('Invalid input!!!')
     else:
         print('Invalid input!!!')
-
