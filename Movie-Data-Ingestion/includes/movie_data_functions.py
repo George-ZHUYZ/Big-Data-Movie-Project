@@ -3,6 +3,10 @@ from pyspark.sql import SparkSession
 import pyspark.sql.functions as f
 import pyspark.sql.types as t
 
+import sys
+sys.path.insert(1, '../../../Big-Data-Movie-Project')
+import settings
+
 
 def create_spark():
     findspark.init()
@@ -27,9 +31,9 @@ def movies_func():
         .na.drop(subset=['tmdb_id'])
 
     df_movies.select(*df_movies.columns).write.format("jdbc") \
-        .option("url", "jdbc:mysql://localhost:3306/spark_movies") \
+        .option("url", "jdbc:mysql://" + settings.DB_Host + "/spark_movies") \
         .option("driver", "com.mysql.cj.jdbc.Driver").option("dbtable", "movies") \
-        .option("user", "root").option("password", "zhuyz928").save()
+        .option("user", settings.DB_Username).option("password", settings.DB_Password).save()
 
 
 def genres_func():
@@ -52,17 +56,17 @@ def genres_func():
     df_movie_genres = df_movie_genres.na.drop('any')
 
     df_movie_genres.select(*df_movie_genres.columns).write.format("jdbc") \
-        .option("url", "jdbc:mysql://localhost:3306/spark_movies") \
+        .option("url", "jdbc:mysql://" + settings.DB_Host + "/spark_movies") \
         .option("driver", "com.mysql.cj.jdbc.Driver").option("dbtable", "movie_genres") \
-        .option("user", "root").option("password", "zhuyz928").save()
+        .option("user", settings.DB_Username).option("password", settings.DB_Password).save()
 
     df_genres = df_movie_genres.select(['genre_id', 'genre_name']).distinct()
     df_genres.sort(f.col('genre_id')).show(df_genres.count())
 
     df_genres.select(*df_genres.columns).write.format("jdbc") \
-        .option("url", "jdbc:mysql://localhost:3306/spark_movies") \
+        .option("url", "jdbc:mysql://" + settings.DB_Host + "/spark_movies") \
         .option("driver", "com.mysql.cj.jdbc.Driver").option("dbtable", "genres") \
-        .option("user", "root").option("password", "zhuyz928").save()
+        .option("user", settings.DB_Username).option("password", settings.DB_Password).save()
 
 
 def prod_companies_func():
@@ -91,17 +95,17 @@ def prod_companies_func():
     df_movie_prod_companies = df_movie_prod_companies.na.drop('any')
 
     df_movie_prod_companies.select(*df_movie_prod_companies.columns).write.format("jdbc") \
-        .option("url", "jdbc:mysql://localhost:3306/spark_movies") \
+        .option("url", "jdbc:mysql://" + settings.DB_Host + "/spark_movies") \
         .option("driver", "com.mysql.cj.jdbc.Driver").option("dbtable", "movie_prod_companies") \
-        .option("user", "root").option("password", "zhuyz928").save()
+        .option("user", settings.DB_Username).option("password", settings.DB_Password).save()
 
     df_prod_companies = df_movie_prod_companies.select(['company_id', 'company_name']).distinct()
     df_prod_companies.sort(f.col('company_id'))
 
     df_prod_companies.select(*df_prod_companies.columns).write.format("jdbc") \
-        .option("url", "jdbc:mysql://localhost:3306/spark_movies") \
+        .option("url", "jdbc:mysql://" + settings.DB_Host + "/spark_movies") \
         .option("driver", "com.mysql.cj.jdbc.Driver").option("dbtable", "prod_companies") \
-        .option("user", "root").option("password", "zhuyz928").save()
+        .option("user", settings.DB_Username).option("password", settings.DB_Password).save()
 
 
 def prod_countries_func():
@@ -130,14 +134,14 @@ def prod_countries_func():
     df_movie_prod_countries = df_movie_prod_countries.na.drop('any')
 
     df_movie_prod_countries.select(*df_movie_prod_countries.columns).write.format("jdbc") \
-        .option("url", "jdbc:mysql://localhost:3306/spark_movies") \
+        .option("url", "jdbc:mysql://" + settings.DB_Host + "/spark_movies") \
         .option("driver", "com.mysql.cj.jdbc.Driver").option("dbtable", "movie_prod_countries") \
-        .option("user", "root").option("password", "zhuyz928").save()
+        .option("user", settings.DB_Username).option("password", settings.DB_Password).save()
 
     df_prod_countries = df_movie_prod_countries.select(['country_code', 'country_name']).distinct()
     df_prod_countries.sort(f.col('country_code'))
 
     df_prod_countries.select(*df_prod_countries.columns).write.format("jdbc") \
-        .option("url", "jdbc:mysql://localhost:3306/spark_movies") \
+        .option("url", "jdbc:mysql://" + settings.DB_Host + "/spark_movies") \
         .option("driver", "com.mysql.cj.jdbc.Driver").option("dbtable", "prod_countries") \
-        .option("user", "root").option("password", "zhuyz928").save()
+        .option("user", settings.DB_Username).option("password", settings.DB_Password).save()

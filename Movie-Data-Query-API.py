@@ -3,15 +3,13 @@ import mysql
 import pymysql
 import pandas as pd
 import json
+import settings
 
 
 def db_Connection():
-    db_username = 'root'
-    db_password = 'zhuyz928'
-    db_hostaddress = 'localhost:3306'
-
     try:
-        db_connection_str = 'mysql+pymysql://' + db_username + ':' + db_password + '@' + db_hostaddress + '/spark_movies'
+        db_connection_str = 'mysql+pymysql://' + settings.DB_Username + ':' + settings.DB_Password + \
+                            '@' + settings.DB_Host + '/spark_movies'
         db_connection = create_engine(db_connection_str)
     except mysql.connector.Error as err:
         print("Something went wrong: {}".format(err))
