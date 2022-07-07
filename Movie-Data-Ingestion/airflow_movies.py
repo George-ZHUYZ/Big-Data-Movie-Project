@@ -1,65 +1,47 @@
+import datetime
+import pendulum
+
 from airflow import DAG
-from airflow.operators.bash_operator import BashOperator
-from airflow.operators.python_operator import PythonOperator
-from airflow.utils.dates import days_ago
+from airflow.operators.bash import BashOperator
 
-from datetime import timedelta
-from includes.movie_data_functions import movies_func
-from includes.movie_data_functions import genres_func
-from includes.movie_data_functions import prod_companies_func
-from includes.movie_data_functions import prod_countries_func
-
-
-args = {
-    'owner': 'Airflow',
-    'start_date': days_ago(1)
-}
-
-dag = DAG(
+with DAG(
     dag_id='airflow_movies',
-    default_args=args,
-    schedule_interval='* * * * *',
-    dagrun_timeout=timedelta(minutes=60),
-    tags=['airflow_movies']
-)
+    schedule_interval='0 0 * * *',
+    start_date=pendulum.datetime(2022, 1, 1, tz="UTC"),
+    catchup=False,
+    dagrun_timeout=datetime.timedelta(minutes=60)
+) as dag:
+    start_op = BashOperator(
+        task_id='start_op',
+        bash_command='echo "Movie Data Ingestion Starts!"',
+    )
 
-start_op = BashOperator(
-    task_id='start_op',
-    bash_command='echo Movie Data Ingestion Starts!',
-    dag=dag,
-)
+    movies_table_op = BashOperator(
+        task_id='movies_table_op',
+        bash_command='bash ~/Big-Data-Movie-Ingestion/script/movies.sh',
+    )
 
-movies_table_op = PythonOperator(
-    task_id='movies_table_op',
-    python_callable=movies_func,
-    dag=dag,
-)
+    genres_table_op = BashOperator(
+        task_id='genres_table_op',
+        bash_command='bash ~/Big-Data-Movie-Ingestion/script/movie_genres.sh',
+    )
 
-genres_table_op = PythonOperator(
-    task_id='genres_table_op',
-    python_callable=genres_func,
-    dag=dag,
-)
+    companies_table_op = BashOperator(
+        task_id='companies_table_op',
+        bash_command='bash ~/Big-Data-Movie-Ingestion/script/movie_companies.sh',
+    )
 
-prod_companies_table_op = PythonOperator(
-    task_id='prod_companies_table_op',
-    python_callable=prod_companies_func,
-    dag=dag,
-)
+    countries_table_op = BashOperator(
+        task_id='countries_table_op',
+        bash_command='bash ~/Big-Data-Movie-Ingestion/script/movie_countries.sh',
+    )
 
-prod_countries_table_op = PythonOperator(
-    task_id='prod_countries_table_op',
-    python_callable=prod_countries_func,
-    dag=dag,
-)
+    end_op = BashOperator(
+        task_id='end_op',
+        bash_command='echo "Movie Data Ingestion Finishes!"',
+    )
 
-end_op = BashOperator(
-    task_id='end_op',
-    bash_command='echo Movie Data Ingestion Finishes!',
-    dag=dag,
-)
-
-start_op >> movies_table_op >> [genres_table_op, prod_companies_table_op, prod_countries_table_op] >> end_op
+    start_op >> movies_table_op >> [genres_table_op, companies_table_op, countries_table_op] >> end_op
 
 if __name__ == "__main__":
     dag.cli()
