@@ -11,7 +11,7 @@ Having the raw dataset of Movies, create a database and do a meticulous design w
 ### Download the dataset of Movies
 
 ```
-curl -O https://www.kaggle.com/datasets/rounakbanik/the-movies-dataset
+https://www.kaggle.com/datasets/rounakbanik/the-movies-dataset
 ```
 
 ### Create a new database as the schema
