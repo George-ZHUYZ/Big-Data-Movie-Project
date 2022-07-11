@@ -18,6 +18,10 @@ https://www.kaggle.com/datasets/rounakbanik/the-movies-dataset
 
 ![alt text](https://github.com/George-ZHUYZ/Big-Data-Movie-Project/blob/main/Moive_Project_ERD.png)
 
+### The data pipeline graph
+
+![alt text](https://github.com/George-ZHUYZ/Big-Data-Movie-Project/blob/main/Movie_Project_Workflow.png)
+
 ### Dependencies
 
 * Any OS (Widnows, Unbuntu, MacOS and etc.) with Python 3.6+ installed.
