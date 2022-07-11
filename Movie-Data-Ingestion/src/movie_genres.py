@@ -11,7 +11,8 @@ spark = SparkSession \
     .appName("Spark_movie_genres_task") \
     .getOrCreate()
 
-df_movies = spark.read.option("header", "true").csv("../movies_metadata.csv")
+df_movies = spark.read.option("header", "true") \
+    .csv("/home/george/Big-Data-Movie-Project/Movie-Data-Ingestion/movies_metadata.csv")
 df_movie_genres = df_movies.select(f.col("id").alias("movie_tmdb_id"), f.col("genres"))
 df_movie_genres = df_movie_genres.withColumn("genres", f.from_json(f.col("genres"), "array<string>"))
 df_movie_genres = df_movie_genres.withColumn("genres", f.explode("genres"))

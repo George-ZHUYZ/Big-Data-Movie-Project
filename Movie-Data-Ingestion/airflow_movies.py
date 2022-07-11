@@ -18,22 +18,22 @@ with DAG(
 
     movies_table_op = BashOperator(
         task_id='movies_table_op',
-        bash_command='bash ~/Big-Data-Movie-Ingestion/script/movies.sh',
+        bash_command='bash /home/george/Big-Data-Movie-Ingestion/script/movies.sh',
     )
 
     genres_table_op = BashOperator(
         task_id='genres_table_op',
-        bash_command='bash ~/Big-Data-Movie-Ingestion/script/movie_genres.sh',
+        bash_command='bash /home/george/Big-Data-Movie-Ingestion/script/movie_genres.sh',
     )
 
     companies_table_op = BashOperator(
         task_id='companies_table_op',
-        bash_command='bash ~/Big-Data-Movie-Ingestion/script/movie_companies.sh',
+        bash_command='bash /home/george/Big-Data-Movie-Ingestion/script/movie_companies.sh',
     )
 
     countries_table_op = BashOperator(
         task_id='countries_table_op',
-        bash_command='bash ~/Big-Data-Movie-Ingestion/script/movie_countries.sh',
+        bash_command='bash /home/george/Big-Data-Movie-Ingestion/script/movie_countries.sh',
     )
 
     end_op = BashOperator(

@@ -11,7 +11,8 @@ spark = SparkSession \
     .appName("Spark_movie_countries_task") \
     .getOrCreate()
 
-df_movies = spark.read.option("header", "true").csv("../movies_metadata.csv")
+df_movies = spark.read.option("header", "true") \
+    .csv("/home/george/Big-Data-Movie-Project/Movie-Data-Ingestion/movies_metadata.csv")
 df_movie_prod_countries = df_movies.select(f.col("id").alias("movie_tmdb_id"), f.col("production_countries"))
 df_movie_prod_countries = df_movie_prod_countries.withColumn("production_countries",
                                                              f.from_json(f.col("production_countries"),

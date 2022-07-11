@@ -10,7 +10,8 @@ spark = SparkSession \
     .appName("Spark_movies_task") \
     .getOrCreate()
 
-df_movies = spark.read.option("header", "true").csv("../movies_metadata.csv")
+df_movies = spark.read.option("header", "true") \
+    .csv("/home/george/Big-Data-Movie-Project/Movie-Data-Ingestion/movies_metadata.csv")
 df_movies = df_movies.withColumnRenamed("id", "tmdb_id") \
     .withColumn('imdb_id', f.col('imdb_id').substr(f.lit(4), f.length('imdb_id'))) \
     .drop('belongs_to_collection', 'genres', 'production_companies', 'production_countries', 'spoken_languages') \
