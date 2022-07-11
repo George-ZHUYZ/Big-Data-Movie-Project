@@ -72,3 +72,8 @@ pip install apache-airflow
 ```
 python ./Movie-Data-Query-API.py
 ```
+
+### Authors
+
+* George Zhu
+* https://github.com/George-ZHUYZ
